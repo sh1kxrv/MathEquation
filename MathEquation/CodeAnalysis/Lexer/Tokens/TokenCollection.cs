@@ -1,6 +1,5 @@
-﻿using MathEquation.CodeAnalysis.Lexer.Syntax;
-using MathEquation.CodeAnalysis.Lexer.Tokens;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MathEquation.CodeAnalysis.Lexer.Syntax;
 
 namespace MathEquation.CodeAnalysis.Lexer
 {

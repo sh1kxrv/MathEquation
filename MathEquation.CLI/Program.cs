@@ -1,5 +1,4 @@
 ﻿using MathEquation.CodeAnalysis.Lexer.Syntax;
-using MathEquation.CodeAnalysis.Lexer.Syntax.Expressions;
 using MathEquation.CodeAnalysis.Parser;
 using System;
 using System.Collections.Generic;
@@ -19,8 +18,8 @@ namespace MathEquation.CLI
                 Console.Write(">>> ");
                 string line = Console.ReadLine();
                 MathParser parser = new MathParser(line);
-                var expression = parser.Parse();
-                PrintTree(expression);
+                SyntaxNode node = parser.Parse();
+                PrintTree(node);
             }
         }
         private static void PrintTree(SyntaxNode expression, string indent = "")

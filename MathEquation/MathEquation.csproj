@@ -46,14 +46,14 @@
     <Compile Include="CodeAnalysis\Impl\ElementPosition.cs" />
     <Compile Include="CodeAnalysis\Impl\LexerPosition.cs" />
     <Compile Include="CodeAnalysis\Lexer\MathLexer.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Syntax\Expressions\BinaryExpressionSyntax.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Syntax\Expressions\ExpressionSyntax.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Syntax\Expressions\NumberExpressionSyntax.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\Expressions\BinaryExpressionSyntax.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\Expressions\ExpressionSyntax.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\Expressions\NumberExpressionSyntax.cs" />
     <Compile Include="CodeAnalysis\Lexer\Tokens\InvalidTokenException.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Syntax\SyntaxKind.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Syntax\SyntaxNode.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\SyntaxKind.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\SyntaxNode.cs" />
     <Compile Include="CodeAnalysis\Lexer\Tokens\TokenCollection.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Syntax\SyntaxToken.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\SyntaxToken.cs" />
     <Compile Include="CodeAnalysis\Parser\MathParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
