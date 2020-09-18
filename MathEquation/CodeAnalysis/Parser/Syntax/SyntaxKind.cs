@@ -3,8 +3,8 @@
     public enum SyntaxKind
     {
         NumberToken,
-        BR_O,
-        BR_C,
+        BR_O,       //(
+        BR_C,       //)
 
         MUL,        // *
         DIV,        // /
@@ -24,6 +24,7 @@
         //Invisible is \0, \n, any whitespaces
         Invisible,
         EOE, //End of Expression
-        InvalidToken
+        InvalidToken,
+        ParethizedExpression
     }
 }

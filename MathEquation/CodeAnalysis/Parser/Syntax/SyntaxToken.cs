@@ -9,13 +9,13 @@ namespace MathEquation.CodeAnalysis.Parser.Syntax
     public class SyntaxToken : SyntaxNode
     {
         public override SyntaxKind Kind { get; }
-        public ElementPosition Position { get; }
+        public int Position { get; }
         public object Value { get; }
         public string Text { get; }
-        public SyntaxToken(SyntaxKind kind, string? text, ElementPosition position, object? value)
+        public SyntaxToken(SyntaxKind kind, string? text, int pos, object? value)
         {
             Kind = kind;
-            Position = position;
+            Position = pos;
             Text = text ?? string.Empty;
 #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
             Value = value;

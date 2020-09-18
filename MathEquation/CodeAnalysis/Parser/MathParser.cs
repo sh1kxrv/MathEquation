@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace MathEquation.CodeAnalysis.Parser
 {
-    public class MathParser
+    public sealed class MathParser
     {
         private readonly MathLexer Lexer;
         private TokenCollection _tokens;
-
+        public HashSet<string> Errors; 
         private int _position;
         private SyntaxToken Peek(int offset)
         {
@@ -26,13 +26,16 @@ namespace MathEquation.CodeAnalysis.Parser
         private SyntaxToken Current => Peek(0);
         public MathParser(string content)
         {
+            Errors = new HashSet<string>();
             Lexer = new MathLexer();
             _tokens = Lexer.Tokenize(content);
+            Errors = Lexer.Errors;
         }
         private SyntaxToken Match(SyntaxKind kind)
         {
             if (Current.Kind == kind)
                 return NextToken();
+            Errors.Add($"Unexpected token <'{Current.Kind}'> expected <{kind}>");
             return new SyntaxToken(kind, null, Current.Position, null);
         }
         private SyntaxToken NextToken()
@@ -41,10 +44,27 @@ namespace MathEquation.CodeAnalysis.Parser
             _position++;
             return token;
         }
-        public ExpressionSyntax Parse()
+        public SyntaxTree Parse()
+        {
+            var expression = ParsePost();
+            var eoe = Match(SyntaxKind.EOE);
+            return new SyntaxTree(Errors, expression, eoe);
+        }
+        private ExpressionSyntax ParsePost()
+        {
+            var left = ParseMain();
+            while (Current.Kind == SyntaxKind.ADD || Current.Kind == SyntaxKind.SUB)
+            {
+                var operatorToken = NextToken();
+                var right = ParseMain();
+                left = new BinaryExpressionSyntax(left, operatorToken, right);
+            }
+            return left;
+        }
+        private ExpressionSyntax ParseMain()
         {
             var left = ParsePrimaryExpression();
-            while (Current.Kind == SyntaxKind.ADD || Current.Kind == SyntaxKind.SUB)
+            while (Current.Kind == SyntaxKind.MUL || Current.Kind == SyntaxKind.DIV)
             {
                 var operatorToken = NextToken();
                 var right = ParsePrimaryExpression();
@@ -52,8 +72,19 @@ namespace MathEquation.CodeAnalysis.Parser
             }
             return left;
         }
+        private ExpressionSyntax ParseExpression()
+        {
+            return ParsePost();
+        }
         private ExpressionSyntax ParsePrimaryExpression()
         {
+            if(Current.Kind == SyntaxKind.BR_O)
+            {
+                var open = NextToken();
+                var expression = ParseExpression();
+                var right = Match(SyntaxKind.BR_C);
+                return new ParenthizedExpressionSyntax(open, expression, right);
+            }
             var numberToken = Match(SyntaxKind.NumberToken);
             return new NumberExpressionSyntax(numberToken);
         }

@@ -2,12 +2,14 @@
 using MathEquation.CodeAnalysis.Lexer.Tokens;
 using MathEquation.CodeAnalysis.Parser.Syntax;
 using System;
+using System.Collections.Generic;
 
 namespace MathEquation.CodeAnalysis.Lexer
 {
     public class MathLexer
     {
         private string Content;
+        public HashSet<string> Errors;
         private int ContentLen { get => Content.Length; }
         private LexerPosition LexerPosition;
         private SyntaxKind Kind;
@@ -27,6 +29,7 @@ namespace MathEquation.CodeAnalysis.Lexer
         }
         public TokenCollection Tokenize(string Content)
         {
+            Errors = new HashSet<string>();
             this.Content = Content;
             TokenCollection collection = new TokenCollection();
             SyntaxToken token;
@@ -36,8 +39,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 {
                     token = Get();
                     if (token.Kind == SyntaxKind.InvalidToken)
-                        throw new InvalidTokenException(LexerPosition.CurrentPosition);
-                    if (token.Kind != SyntaxKind.Invisible && token.Kind != SyntaxKind.EOE)
+                        Errors.Add($"Unknown character: <'{Current}'> on pos <{LexerPosition.CurrentPosition}>");
+                    if (token.Kind != SyntaxKind.Invisible && token.Kind != SyntaxKind.InvalidToken)
                         collection.Add(token);
                 }
                 while (token.Kind != SyntaxKind.EOE);
@@ -55,6 +58,7 @@ namespace MathEquation.CodeAnalysis.Lexer
             {
                 case '\0':
                     Kind = SyntaxKind.EOE;
+                    //LexerPosition.CurrentPosition++;
                     break;
                 case '\n':
                 case ' ':
@@ -92,10 +96,17 @@ namespace MathEquation.CodeAnalysis.Lexer
                 default:
                     if (char.IsWhiteSpace(Current))
                         ReadWhiteSpace();
+                    else
+                    {
+                        Errors.Add($"Unknown character: <'{Current}'> on pos <{LexerPosition.CurrentPosition}>");
+                        LexerPosition.CurrentPosition++;
+                    }
                     break;
             }
-            string Text = Content.Substring(LexerPosition.StartPosition, LexerPosition.CurrentPosition - LexerPosition.StartPosition);
-            return new SyntaxToken(Kind, Text, new ElementPosition(LexerPosition.StartPosition, LexerPosition.CurrentPosition - LexerPosition.StartPosition), Value);
+            string Text = Current.ToString();
+            if (LexerPosition.CurrentPosition - LexerPosition.StartPosition > 0)
+                Text = Content.Substring(LexerPosition.StartPosition, LexerPosition.CurrentPosition - LexerPosition.StartPosition);
+            return new SyntaxToken(Kind, Text, LexerPosition.CurrentPosition - LexerPosition.StartPosition, Value);
         }
         private void ReadWhiteSpace()
         {
@@ -121,13 +132,13 @@ namespace MathEquation.CodeAnalysis.Lexer
             if (!isDouble)
             {
                 if (!int.TryParse(str, out int value))
-                    throw new Exception($"Invalid integer number {str}");
+                    Errors.Add($"Error with try parse int value. {str}");
                 Value = value;
             }
             else {
                 //))))))))))
                 if (!double.TryParse(str.Replace('.', ','), out double value))
-                    throw new Exception($"Invalid double number {str}");
+                    Errors.Add($"Error with try parse double value. {str}");
                 Value = value;
             }
             Kind = SyntaxKind.NumberToken;
@@ -144,6 +155,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 Kind = SyntaxKind.MUL;
             else if (Current is '=')
                 Kind = SyntaxKind.EQUALLY;
+            else
+                Errors.Add($"Unknown operator: {Current}");
             LexerPosition.CurrentPosition++;
         }
     }

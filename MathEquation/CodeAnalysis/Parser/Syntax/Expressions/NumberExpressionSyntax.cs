@@ -8,12 +8,12 @@ namespace MathEquation.CodeAnalysis.Parser.Syntax.Expressions
 {
     public class NumberExpressionSyntax : ExpressionSyntax
     {
-        public NumberExpressionSyntax(SyntaxNode NumberToken)
+        public NumberExpressionSyntax(SyntaxToken NumberToken)
         {
             this.NumberToken = NumberToken;
         }
         public override SyntaxKind Kind => SyntaxKind.NumberExpression;
-        public SyntaxNode NumberToken;
+        public SyntaxToken NumberToken;
 
         public override IEnumerable<SyntaxNode> GetChildren()
         {

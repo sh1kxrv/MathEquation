@@ -1,5 +1,6 @@
 ﻿using MathEquation.CodeAnalysis.Parser;
 using MathEquation.CodeAnalysis.Parser.Syntax;
+using MathEquation.CodeAnalysis.Parser.Syntax.Evaluator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,21 @@ namespace MathEquation.CLI
                 Console.Write(">>> ");
                 string line = Console.ReadLine();
                 MathParser parser = new MathParser(line);
-                SyntaxNode node = parser.Parse();
+                var node = parser.Parse().Root;
                 PrintTree(node);
+
+                if (parser.Errors.Any())
+                {
+                    foreach(var error in parser.Errors)
+                        ColoredWriteLine(ConsoleColor.Red, error);
+                }
+                else
+                {
+                    MathEvaluator evaluator = new MathEvaluator(node);
+                    ColoredWrite(ConsoleColor.DarkGray, "Result of expression is: ");
+                    ColoredWriteLine(ConsoleColor.DarkYellow, evaluator.Evaluate().ToString());
+                    //evaluate
+                }
             }
         }
         private static void PrintTree(SyntaxNode expression, string indent = "")
