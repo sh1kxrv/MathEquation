@@ -1,6 +1,5 @@
 ﻿using MathEquation.CodeAnalysis.Impl;
 using MathEquation.CodeAnalysis.Lexer.Tokens;
-using MathEquation.CodeAnalysis.Parser.Syntax;
 using System;
 
 namespace MathEquation.CodeAnalysis.Lexer
@@ -67,6 +66,7 @@ namespace MathEquation.CodeAnalysis.Lexer
                 case '/':
                 case '*':
                 case '=':
+                case '^':
                     ReadOperators();
                     break;
                 case '1':
@@ -92,6 +92,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 default:
                     if (char.IsWhiteSpace(Current))
                         ReadWhiteSpace();
+                    else
+                        ReadLiterals();
                     break;
             }
             string Text = Content.Substring(LexerPosition.StartPosition, LexerPosition.CurrentPosition - LexerPosition.StartPosition);
@@ -130,7 +132,17 @@ namespace MathEquation.CodeAnalysis.Lexer
                     throw new Exception($"Invalid double number {str}");
                 Value = value;
             }
-            Kind = SyntaxKind.NumberToken;
+            Kind = SyntaxKind.NUMBER;
+        }
+        private void ReadLiterals()
+        {
+            while (char.IsLetter(Current))
+                LexerPosition.CurrentPosition++;
+
+            int len = LexerPosition.CurrentPosition - LexerPosition.StartPosition;
+            Value = Content.Substring(LexerPosition.StartPosition, len);
+
+            Kind = SyntaxKind.LETTER;
         }
         private void ReadOperators()
         {
@@ -142,6 +154,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 Kind = SyntaxKind.DIV;
             else if (Current is '*')
                 Kind = SyntaxKind.MUL;
+            else if (Current is '^')
+                Kind = SyntaxKind.POW;
             else if (Current is '=')
                 Kind = SyntaxKind.EQUALLY;
             LexerPosition.CurrentPosition++;

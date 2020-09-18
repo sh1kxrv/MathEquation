@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MathEquation.CodeAnalysis.Parser.Syntax
+namespace MathEquation.CodeAnalysis.Lexer.Tokens
 {
 #nullable enable
-    //Add syntax tree and impl. syntax node!
-    public class SyntaxToken : SyntaxNode
+//Add syntax tree and impl. syntax node!
+    public class SyntaxToken
     {
-        public override SyntaxKind Kind { get; }
+        public SyntaxKind Kind { get; }
         public ElementPosition Position { get; }
         public object Value { get; }
         public string Text { get; }
@@ -20,11 +20,6 @@ namespace MathEquation.CodeAnalysis.Parser.Syntax
 #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
             Value = value;
 #pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-        }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            return Enumerable.Empty<SyntaxNode>();
         }
     }
 }

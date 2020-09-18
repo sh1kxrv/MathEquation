@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MathEquation\MathEquation.csproj">
-      <Project>{A39FEBBF-C8FC-43C3-97DF-98F8885C6147}</Project>
+      <Project>{a39febbf-c8fc-43c3-97df-98f8885c6147}</Project>
       <Name>MathEquation</Name>
     </ProjectReference>
   </ItemGroup>

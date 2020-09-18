@@ -1,8 +1,9 @@
-﻿namespace MathEquation.CodeAnalysis.Parser.Syntax
+﻿namespace MathEquation.CodeAnalysis.Lexer.Tokens
 {
     public enum SyntaxKind
     {
-        NumberToken,
+        NUMBER,
+        LETTER,
         BR_O,
         BR_C,
 
@@ -10,6 +11,7 @@
         DIV,        // /
         SUB,        // -
         ADD,        // +
+        POW,        // ^
         EQUALLY,    // =
 
         //Syntax

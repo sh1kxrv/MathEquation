@@ -14,7 +14,7 @@ namespace MathEquation.Tests
         }
 
         [Test]
-        public void LexerTests()
+        public void NumberTests()
         {
             var tokens = Lexer.Tokenize("1 + 4 + 5.52 - (51 * 52)");
             Assert.AreEqual(tokens.Count, 11);
