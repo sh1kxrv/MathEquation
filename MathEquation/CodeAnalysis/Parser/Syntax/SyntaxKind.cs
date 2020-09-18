@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MathEquation.CodeAnalysis.Parser.Syntax
+﻿namespace MathEquation.CodeAnalysis.Parser.Syntax
 {
     public enum SyntaxKind
     {
-        NUMBER,
+        NumberToken,
         BR_O,
         BR_C,
 
@@ -18,15 +12,18 @@ namespace MathEquation.CodeAnalysis.Parser.Syntax
         ADD,        // +
         EQUALLY,    // =
 
-        EOE, //End of Expression
-        InvalidToken,
-
-        //Invisible is \0, \n, any whitespaces
-        Invisible,
-
         //Syntax
 
         NumberExpression,
-        BinaryExpression
+        BinaryExpression,
+
+
+
+
+
+        //Invisible is \0, \n, any whitespaces
+        Invisible,
+        EOE, //End of Expression
+        InvalidToken
     }
 }

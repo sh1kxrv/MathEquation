@@ -130,7 +130,7 @@ namespace MathEquation.CodeAnalysis.Lexer
                     throw new Exception($"Invalid double number {str}");
                 Value = value;
             }
-            Kind = SyntaxKind.NUMBER;
+            Kind = SyntaxKind.NumberToken;
         }
         private void ReadOperators()
         {

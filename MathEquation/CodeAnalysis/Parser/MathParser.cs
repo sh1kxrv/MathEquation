@@ -54,7 +54,7 @@ namespace MathEquation.CodeAnalysis.Parser
         }
         private ExpressionSyntax ParsePrimaryExpression()
         {
-            var numberToken = Match(SyntaxKind.NUMBER);
+            var numberToken = Match(SyntaxKind.NumberToken);
             return new NumberExpressionSyntax(numberToken);
         }
     }

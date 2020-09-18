@@ -25,17 +25,30 @@ namespace MathEquation.CLI
         private static void PrintTree(SyntaxNode expression, string indent = "")
         {
             Console.Write(indent);
-            Console.Write(expression.Kind);
+            ColoredWrite(ConsoleColor.DarkGray, expression.Kind.ToString());
 
-            if(expression is SyntaxToken t && t.Value != null)
-                Console.WriteLine(" " + ((SyntaxToken)expression).Value);
-            else
-                Console.WriteLine();
+            if (expression is SyntaxToken t && t.Value != null)
+            {
+                Console.Write(" -> ");
+                ColoredWrite(ConsoleColor.DarkYellow, t.Value.ToString());
+            }
+
+            Console.WriteLine();
 
             indent += '\t';
 
             foreach (var child in expression.GetChildren())
                 PrintTree(child, indent);
+        }
+        private static void ColoredWrite(ConsoleColor color, string msg)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(msg);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+        }
+        private static void ColoredWriteLine(ConsoleColor color, string msg)
+        {
+            ColoredWrite(color, msg + "\n");
         }
     }
 }
