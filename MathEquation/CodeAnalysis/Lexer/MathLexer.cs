@@ -77,7 +77,7 @@ namespace MathEquation.CodeAnalysis.Lexer
                 case '8':
                 case '9':
                 case '0':
-
+                    ReadNumber();
                     break;
                 default:
                     if (char.IsWhiteSpace(Current))
