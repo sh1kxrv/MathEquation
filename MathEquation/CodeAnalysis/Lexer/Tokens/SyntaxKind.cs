@@ -8,5 +8,20 @@ namespace MathEquation.CodeAnalysis.Lexer.Tokens
 {
     public enum SyntaxKind
     {
+        NUMBER,
+        OPENBRACKET,
+        CLOSEBRACKET,
+
+        MUL,        // *
+        DIV,        // /
+        SUB,        // -
+        ADD,        // +
+        EQUALLY,    // =
+
+        EOE, //End of Expression
+        InvalidToken,
+
+        //Invisible is \0, \n, any whitespaces
+        Invisible
     }
 }

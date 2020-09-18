@@ -2,12 +2,10 @@
 {
     public class ElementPosition
     {
-        public int Line { get; set; }
         public int Start { get; set; }
         public int End { get; set; }
-        public ElementPosition(int start, int end, int line)
+        public ElementPosition(int start, int end)
         {
-            Line = line;
             End = end;
             Start = start;
         }

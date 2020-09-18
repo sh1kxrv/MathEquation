@@ -46,9 +46,8 @@
     <Compile Include="CodeAnalysis\Impl\ElementPosition.cs" />
     <Compile Include="CodeAnalysis\Impl\LexerPosition.cs" />
     <Compile Include="CodeAnalysis\Lexer\MathLexer.cs" />
+    <Compile Include="CodeAnalysis\Lexer\Tokens\InvalidTokenException.cs" />
     <Compile Include="CodeAnalysis\Lexer\Tokens\SyntaxKind.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Tokens\SyntaxNode.cs" />
-    <Compile Include="CodeAnalysis\Lexer\Tokens\SyntaxTree.cs" />
     <Compile Include="CodeAnalysis\Lexer\Tokens\TokenCollection.cs" />
     <Compile Include="CodeAnalysis\Lexer\Tokens\SyntaxToken.cs" />
     <Compile Include="CodeAnalysis\Parser\MathParser.cs" />
