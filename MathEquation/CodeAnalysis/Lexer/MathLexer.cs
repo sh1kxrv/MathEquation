@@ -10,15 +10,14 @@ namespace MathEquation.CodeAnalysis.Lexer
 {
     public class MathLexer
     {
-        private readonly string Content;
+        private string Content;
         private int ContentLen { get => Content.Length; }
         private LexerPosition LexerPosition;
         private SyntaxKind Kind;
         private object Value;
-        public MathLexer(string content)
+        public MathLexer()
         {
             LexerPosition = new LexerPosition(0, 0);
-            Content = content;
         }
         private char Current { get => Peek(0); }
         private char Lookahead { get => Peek(1); }
@@ -26,11 +25,12 @@ namespace MathEquation.CodeAnalysis.Lexer
         {
             int index = LexerPosition.CurrentPosition + offset;
             if (index >= ContentLen)
-                return ' ';
+                return '\0';
             return Content[index];
         }
-        public TokenCollection Tokenize()
+        public TokenCollection Tokenize(string Content)
         {
+            this.Content = Content;
             TokenCollection collection = new TokenCollection();
             SyntaxToken token;
             for (int i = 0; i < ContentLen; i++)
@@ -40,11 +40,13 @@ namespace MathEquation.CodeAnalysis.Lexer
                     token = Get();
                     if (token.Kind == SyntaxKind.InvalidToken)
                         throw new InvalidTokenException(LexerPosition.CurrentPosition);
-                    if (token.Kind != SyntaxKind.Invisible)
+                    if (token.Kind != SyntaxKind.Invisible && token.Kind != SyntaxKind.EOE)
                         collection.Add(token);
                 }
                 while (token.Kind != SyntaxKind.EOE);
             }
+            LexerPosition = new LexerPosition(0, 0);
+            Value = null;
             return collection;
         }
         private SyntaxToken Get()
@@ -54,6 +56,9 @@ namespace MathEquation.CodeAnalysis.Lexer
             Value = null;
             switch (Current)
             {
+                case '\0':
+                    Kind = SyntaxKind.EOE;
+                    break;
                 case '\n':
                 case ' ':
                 case '\t':
@@ -98,7 +103,7 @@ namespace MathEquation.CodeAnalysis.Lexer
             while (char.IsDigit(Current))
                 LexerPosition.CurrentPosition++;
 
-            int len = LexerPosition.StartPosition - LexerPosition.CurrentPosition;
+            int len = LexerPosition.CurrentPosition - LexerPosition.StartPosition;
             string str = Content.Substring(LexerPosition.StartPosition, len);
             if (!int.TryParse(str, out int value))
                 throw new Exception($"Invalid Number {str}");

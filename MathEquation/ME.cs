@@ -8,5 +8,9 @@ namespace MathEquation
 {
     public class ME
     {
+        public ME()
+        {
+
+        }
     }
 }
