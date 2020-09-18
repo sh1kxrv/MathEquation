@@ -1,5 +1,5 @@
 using MathEquation.CodeAnalysis.Lexer;
-using MathEquation.CodeAnalysis.Lexer.Syntax;
+using MathEquation.CodeAnalysis.Parser.Syntax;
 using NUnit.Framework;
 
 namespace MathEquation.Tests

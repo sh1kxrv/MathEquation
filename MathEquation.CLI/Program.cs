@@ -1,5 +1,5 @@
-﻿using MathEquation.CodeAnalysis.Lexer.Syntax;
-using MathEquation.CodeAnalysis.Parser;
+﻿using MathEquation.CodeAnalysis.Parser;
+using MathEquation.CodeAnalysis.Parser.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;

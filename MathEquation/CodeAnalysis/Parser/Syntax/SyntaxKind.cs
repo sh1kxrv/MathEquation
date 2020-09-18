@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathEquation.CodeAnalysis.Lexer.Syntax
+namespace MathEquation.CodeAnalysis.Parser.Syntax
 {
     public enum SyntaxKind
     {

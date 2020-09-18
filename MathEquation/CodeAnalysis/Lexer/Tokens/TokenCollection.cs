@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MathEquation.CodeAnalysis.Lexer.Syntax;
+using MathEquation.CodeAnalysis.Parser.Syntax;
 
 namespace MathEquation.CodeAnalysis.Lexer
 {

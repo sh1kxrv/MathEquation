@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MathEquation.CodeAnalysis.Lexer.Syntax
+namespace MathEquation.CodeAnalysis.Parser.Syntax
 {
 #nullable enable
     //Add syntax tree and impl. syntax node!

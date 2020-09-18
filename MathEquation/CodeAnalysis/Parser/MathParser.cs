@@ -1,6 +1,6 @@
 ﻿using MathEquation.CodeAnalysis.Lexer;
-using MathEquation.CodeAnalysis.Lexer.Syntax;
-using MathEquation.CodeAnalysis.Lexer.Syntax.Expressions;
+using MathEquation.CodeAnalysis.Parser.Syntax;
+using MathEquation.CodeAnalysis.Parser.Syntax.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

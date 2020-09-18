@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathEquation.CodeAnalysis.Lexer.Syntax.Expressions
+namespace MathEquation.CodeAnalysis.Parser.Syntax.Expressions
 {
     public class BinaryExpressionSyntax : ExpressionSyntax
     {
