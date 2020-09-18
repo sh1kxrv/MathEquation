@@ -86,9 +86,11 @@ namespace MathEquation.CodeAnalysis.Lexer
                     break;
                 case '(':
                     Kind = SyntaxKind.BR_O;
+                    LexerPosition.CurrentPosition++;
                     break;
                 case ')':
                     Kind = SyntaxKind.BR_C;
+                    LexerPosition.CurrentPosition++;
                     break;
                 default:
                     if (char.IsWhiteSpace(Current))
@@ -106,14 +108,31 @@ namespace MathEquation.CodeAnalysis.Lexer
         }
         private void ReadNumber()
         {
+            bool isDouble = false;
             while (char.IsDigit(Current))
+            {
+                if (Lookahead is '.')
+                {
+                    LexerPosition.CurrentPosition++;
+                    isDouble = true;
+                }
                 LexerPosition.CurrentPosition++;
+            }
 
             int len = LexerPosition.CurrentPosition - LexerPosition.StartPosition;
             string str = Content.Substring(LexerPosition.StartPosition, len);
-            if (!int.TryParse(str, out int value))
-                throw new Exception($"Invalid Number {str}");
-            Value = value;
+            if (!isDouble)
+            {
+                if (!int.TryParse(str, out int value))
+                    throw new Exception($"Invalid integer number {str}");
+                Value = value;
+            }
+            else {
+                //))))))))))
+                if (!double.TryParse(str.Replace('.', ','), out double value))
+                    throw new Exception($"Invalid double number {str}");
+                Value = value;
+            }
             Kind = SyntaxKind.NUMBER;
         }
         private void ReadOperators()

@@ -16,8 +16,8 @@ namespace MathEquation.Tests
         [Test]
         public void NumberTests()
         {
-            var tokens = Lexer.Tokenize("1 + 4");
-            Assert.AreEqual(tokens.Count, 3);
+            var tokens = Lexer.Tokenize("1 + 4 + 5.52 - (51 * 52)");
+            Assert.AreEqual(tokens.Count, 11);
 
             Assert.AreEqual((int)tokens[0].Value == 1, true);
             Assert.AreEqual(tokens[1].Kind == SyntaxKind.ADD, true);
