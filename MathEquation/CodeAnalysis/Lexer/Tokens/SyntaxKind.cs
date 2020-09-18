@@ -9,8 +9,8 @@ namespace MathEquation.CodeAnalysis.Lexer.Tokens
     public enum SyntaxKind
     {
         NUMBER,
-        OPENBRACKET,
-        CLOSEBRACKET,
+        BR_O,
+        BR_C,
 
         MUL,        // *
         DIV,        // /

@@ -84,6 +84,12 @@ namespace MathEquation.CodeAnalysis.Lexer
                 case '0':
                     ReadNumber();
                     break;
+                case '(':
+                    Kind = SyntaxKind.BR_O;
+                    break;
+                case ')':
+                    Kind = SyntaxKind.BR_C;
+                    break;
                 default:
                     if (char.IsWhiteSpace(Current))
                         ReadWhiteSpace();
