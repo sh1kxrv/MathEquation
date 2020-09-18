@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathEquation
+namespace MathEquation.CodeAnalysis.Lexer.Syntax.Expressions
 {
-    public class ME
+    public abstract class ExpressionSyntax : SyntaxNode
     {
-        public ME()
-        {
-
-        }
     }
 }

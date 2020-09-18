@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathEquation.CodeAnalysis.Lexer.Tokens
+namespace MathEquation.CodeAnalysis.Lexer.Syntax
 {
     public enum SyntaxKind
     {
@@ -22,6 +22,11 @@ namespace MathEquation.CodeAnalysis.Lexer.Tokens
         InvalidToken,
 
         //Invisible is \0, \n, any whitespaces
-        Invisible
+        Invisible,
+
+        //Syntax
+
+        NumberExpression,
+        BinaryExpression
     }
 }

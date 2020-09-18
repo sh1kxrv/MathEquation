@@ -1,10 +1,7 @@
 ﻿using MathEquation.CodeAnalysis.Impl;
+using MathEquation.CodeAnalysis.Lexer.Syntax;
 using MathEquation.CodeAnalysis.Lexer.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MathEquation.CodeAnalysis.Lexer
 {
