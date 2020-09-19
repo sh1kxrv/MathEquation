@@ -21,5 +21,9 @@ namespace MathEquation.CodeAnalysis.Lexer.Tokens
             Value = value;
 #pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
         }
+        public override string ToString()
+        {
+            return Text + ", " + Kind;
+        }
     }
 }

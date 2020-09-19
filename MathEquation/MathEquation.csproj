@@ -51,6 +51,8 @@
     <Compile Include="CodeAnalysis\Lexer\Tokens\SyntaxToken.cs" />
     <Compile Include="CodeAnalysis\Lexer\Tokens\TokenCollection.cs" />
     <Compile Include="CodeAnalysis\Parser\Calculator.cs" />
+    <Compile Include="CodeAnalysis\Parser\Determinant.cs" />
+    <Compile Include="CodeAnalysis\Parser\Structures.cs" />
     <Compile Include="CodeAnalysis\Parser\OperatorPriority.cs" />
     <Compile Include="CodeAnalysis\Parser\Equation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

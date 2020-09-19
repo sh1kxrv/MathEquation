@@ -21,7 +21,7 @@ namespace MathEquation.CodeAnalysis.Parser
 
         public double Calculate(TokenCollection tokens)
         {
-            if (tokens[0].Kind == SyntaxKind.SUB)
+            if (tokens[0].Kind == SyntaxKind.SUB || tokens[0].Kind == SyntaxKind.ADD)
                 tokens.Insert(0, new SyntaxToken(SyntaxKind.NUMBER, 0.ToString(), new Impl.ElementPosition(0, 0), 0));
 
             while (tokens.Count > 1)

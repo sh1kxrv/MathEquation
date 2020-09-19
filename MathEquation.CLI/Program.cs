@@ -12,7 +12,17 @@ namespace MathEquation.CLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(new Equation().CalculateX("2*(2*(2+x))=4"));
+            //FFUUUUUUUUUUUCK
+            Console.WriteLine(new Equation().CalculateX("x+x+22=64-2"));
+
+            var dtm = new DeterminantMatrix(5,  4,  1,  1,  2,  1,
+                                                1,  2, -1,  1,  1,
+                                                3,  1,  1,  1,  1,
+                                                2,  1,  1,  4,  1,
+                                                2, -1,  1,  1,  5);
+            var dt = new Determinant(dtm);
+
+            Console.WriteLine(dt.Calculate());
 
             Console.ReadLine();
         }
