@@ -27,13 +27,18 @@ namespace MathEquation.CodeAnalysis.Parser
                     tokens.Insert(0, new SyntaxToken(SyntaxKind.NUMBER, 0.ToString(), new Impl.ElementPosition(0, 0), 0));
 
                 var trycount = 0;
+                start:
                 while (tokens.Count > 1)
                 {
                     for (var priority = OperatorPriority.MaxPriority; priority >= 0; priority--)
                         for (var i = 0; i < tokens.Count; i++)
                         {
                             if (OperatorPriority.Get(tokens[i]) == priority)
-                                ReplaceAction(tokens, i);
+                            {
+                                i += ReplaceAction(tokens, i);
+                                //For safe
+                                goto start;
+                            }
                             ReplaceMathFunc(tokens, i);
                         }
                     trycount++;
@@ -50,14 +55,14 @@ namespace MathEquation.CodeAnalysis.Parser
             }
         }
 
-        private TokenCollection ReplaceMathFunc(TokenCollection tokens, int index)
+        private int ReplaceMathFunc(TokenCollection tokens, int index)
         {
             int rlength = 0, rindex = 0;
             var value = 0.0;
             bool iscalc = false;
 
             if (index >= tokens.Count)
-                return tokens;
+                return 0;
 
 
             //temp
@@ -130,10 +135,10 @@ namespace MathEquation.CodeAnalysis.Parser
                 tokens.Insert(rindex, new SyntaxToken(SyntaxKind.NUMBER, value.ToString(), new Impl.ElementPosition(0, 0), value));
             }
 
-            return tokens;
+            return rlength;
         }
 
-        private TokenCollection ReplaceAction(TokenCollection tokens, int index)
+        private int ReplaceAction(TokenCollection tokens, int index)
         {
             int rlength = 0, rindex = 0;
             var value = 0.0;
@@ -219,7 +224,7 @@ namespace MathEquation.CodeAnalysis.Parser
                 tokens.Insert(rindex, new SyntaxToken(SyntaxKind.NUMBER, value.ToString(), new Impl.ElementPosition(0, 0), value));
             }
 
-            return tokens;
+            return rindex - index;
         }
 
         private double GetVal(TokenCollection tokens, int index)
