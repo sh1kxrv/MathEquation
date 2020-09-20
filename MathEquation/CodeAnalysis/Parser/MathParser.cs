@@ -31,6 +31,11 @@ namespace MathEquation.CodeAnalysis.Parser
             _tokens = Lexer.Tokenize(content);
             Errors = Lexer.Errors;
         }
+        public MathParser(TokenCollection tokens)
+        {
+            Errors = new HashSet<string>();
+            _tokens = tokens;
+        }
         private SyntaxToken Match(SyntaxKind kind)
         {
             if (Current.Kind == kind)
@@ -53,7 +58,7 @@ namespace MathEquation.CodeAnalysis.Parser
         private ExpressionSyntax ParsePost()
         {
             var left = ParseMain();
-            while (Current.Kind == SyntaxKind.ADD || Current.Kind == SyntaxKind.SUB)
+            while (Current.Kind == SyntaxKind.ADD || Current.Kind == SyntaxKind.SUB || Current.Kind == SyntaxKind.POW)
             {
                 var operatorToken = NextToken();
                 var right = ParseMain();
@@ -85,7 +90,7 @@ namespace MathEquation.CodeAnalysis.Parser
                 var right = Match(SyntaxKind.BR_C);
                 return new ParenthizedExpressionSyntax(open, expression, right);
             }
-            var numberToken = Match(SyntaxKind.NumberToken);
+            var numberToken = Match(SyntaxKind.NUMBER);
             return new NumberExpressionSyntax(numberToken);
         }
     }

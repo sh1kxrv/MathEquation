@@ -2,7 +2,7 @@
 {
     public enum SyntaxKind
     {
-        NumberToken,
+        NUMBER,
         BR_O,       //(
         BR_C,       //)
 
@@ -11,6 +11,7 @@
         SUB,        // -
         ADD,        // +
         EQUALLY,    // =
+        LETTER,
 
         //Syntax
 
@@ -25,6 +26,7 @@
         Invisible,
         EOE, //End of Expression
         InvalidToken,
-        ParethizedExpression
+        ParethizedExpression,
+        POW
     }
 }

@@ -22,7 +22,10 @@ namespace MathEquation.CodeAnalysis.Parser.Syntax.Evaluator
         private double EvaluateExpression(ExpressionSyntax root)
         {
             if (root is NumberExpressionSyntax n)
-                return double.Parse(n.NumberToken.Value.ToString());
+            {
+                string raw = (n.NumberToken.Value ?? "0,0").ToString();
+                return double.Parse(raw);
+            }
             if(root is BinaryExpressionSyntax b)
             {
                 var left = EvaluateExpression(b.Left);
@@ -35,6 +38,8 @@ namespace MathEquation.CodeAnalysis.Parser.Syntax.Evaluator
                     return left / right;
                 else if (b.OperatorToken.Kind == SyntaxKind.MUL)
                     return left * right;
+                else if (b.OperatorToken.Kind == SyntaxKind.POW)
+                    return Math.Pow(left, right);
                 else
                     throw new Exception($"Unknown operator kind: {b.OperatorToken.Kind}");
             }

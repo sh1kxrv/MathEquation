@@ -46,6 +46,7 @@
     <Compile Include="CodeAnalysis\Impl\ElementPosition.cs" />
     <Compile Include="CodeAnalysis\Impl\LexerPosition.cs" />
     <Compile Include="CodeAnalysis\Lexer\MathLexer.cs" />
+    <Compile Include="CodeAnalysis\Parser\Syntax\Evaluator\EquationEvaluator.cs" />
     <Compile Include="CodeAnalysis\Parser\Syntax\Evaluator\MathEvaluator.cs" />
     <Compile Include="CodeAnalysis\Parser\Syntax\Expressions\BinaryExpressionSyntax.cs" />
     <Compile Include="CodeAnalysis\Parser\Syntax\Expressions\ExpressionSyntax.cs" />

@@ -10,7 +10,7 @@ namespace MathEquation.CodeAnalysis.Lexer
     {
         private string Content;
         public HashSet<string> Errors;
-        private int ContentLen { get => Content.Length; }
+        private int ContentLen => Content.Length;
         private LexerPosition LexerPosition;
         private SyntaxKind Kind;
         private object Value;
@@ -40,13 +40,15 @@ namespace MathEquation.CodeAnalysis.Lexer
                     token = Get();
                     if (token.Kind == SyntaxKind.InvalidToken)
                         Errors.Add($"Unknown character: <'{Current}'> on pos <{LexerPosition.CurrentPosition}>");
-                    if (token.Kind != SyntaxKind.Invisible && token.Kind != SyntaxKind.InvalidToken)
+                    if (token.Kind != SyntaxKind.Invisible && token.Kind != SyntaxKind.InvalidToken && token.Kind != SyntaxKind.EOE)
                         collection.Add(token);
                 }
                 while (token.Kind != SyntaxKind.EOE);
             }
+            Kind = SyntaxKind.InvalidToken;
             LexerPosition = new LexerPosition(0, 0);
             Value = null;
+            collection.Add(new SyntaxToken(SyntaxKind.EOE, null, ContentLen, null));
             return collection;
         }
         private SyntaxToken Get()
@@ -71,18 +73,12 @@ namespace MathEquation.CodeAnalysis.Lexer
                 case '/':
                 case '*':
                 case '=':
+                case '^':
                     ReadOperators();
                     break;
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case '0':
+                case '1':case '2':
+                case '3':case '4':case '5':case '6':
+                case '7':case '8':case '9':case '0':
                     ReadNumber();
                     break;
                 case '(':
@@ -96,6 +92,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 default:
                     if (char.IsWhiteSpace(Current))
                         ReadWhiteSpace();
+                    else if (char.IsLetter(Current))
+                        ReadLetter();
                     else
                     {
                         Errors.Add($"Unknown character: <'{Current}'> on pos <{LexerPosition.CurrentPosition}>");
@@ -108,6 +106,18 @@ namespace MathEquation.CodeAnalysis.Lexer
                 Text = Content.Substring(LexerPosition.StartPosition, LexerPosition.CurrentPosition - LexerPosition.StartPosition);
             return new SyntaxToken(Kind, Text, LexerPosition.CurrentPosition - LexerPosition.StartPosition, Value);
         }
+
+        private void ReadLetter()
+        {
+            while (char.IsLetter(Current))
+                LexerPosition.CurrentPosition++;
+
+            int len = LexerPosition.CurrentPosition - LexerPosition.StartPosition;
+            Value = Content.Substring(LexerPosition.StartPosition, len);
+
+            Kind = SyntaxKind.LETTER;
+        }
+
         private void ReadWhiteSpace()
         {
             while (char.IsWhiteSpace(Current))
@@ -119,7 +129,7 @@ namespace MathEquation.CodeAnalysis.Lexer
             bool isDouble = false;
             while (char.IsDigit(Current))
             {
-                if (Lookahead is '.')
+                if (Lookahead is '.' || Lookahead is ',')
                 {
                     LexerPosition.CurrentPosition++;
                     isDouble = true;
@@ -141,7 +151,7 @@ namespace MathEquation.CodeAnalysis.Lexer
                     Errors.Add($"Error with try parse double value. {str}");
                 Value = value;
             }
-            Kind = SyntaxKind.NumberToken;
+            Kind = SyntaxKind.NUMBER;
         }
         private void ReadOperators()
         {
@@ -155,6 +165,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 Kind = SyntaxKind.MUL;
             else if (Current is '=')
                 Kind = SyntaxKind.EQUALLY;
+            else if (Current is '^')
+                Kind = SyntaxKind.POW;
             else
                 Errors.Add($"Unknown operator: {Current}");
             LexerPosition.CurrentPosition++;
