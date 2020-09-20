@@ -110,7 +110,7 @@ namespace MathEquation.CodeAnalysis.Lexer
             bool isDouble = false;
             while (char.IsDigit(Current))
             {
-                if (Lookahead is '.')
+                if (Lookahead is '.' || Lookahead is ',')
                 {
                     LexerPosition.CurrentPosition++;
                     isDouble = true;

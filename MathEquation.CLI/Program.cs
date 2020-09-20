@@ -25,6 +25,7 @@ namespace MathEquation.CLI
             Console.WriteLine(dt.Calculate());*/
 
             Console.WriteLine(new Calculator().Calculate("tg25"));
+            Console.WriteLine(new Calculator().Calculate("5,52 + 5.15"));
 
             Console.ReadLine();
         }
