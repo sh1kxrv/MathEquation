@@ -10,14 +10,14 @@ namespace MathEquation.CodeAnalysis.Parser
 {
     class OperatorPriority
     {
-        public const int MaxPriority = 2;
+        public const int MaxPriority = 3;
 
         public static int Get(SyntaxToken token)
         {
             switch (token.Kind)
             {
-                case SyntaxKind.BR_O: return 2;
-                case SyntaxKind.BR_C: return 2;
+                case SyntaxKind.BR_O: return 3;
+                case SyntaxKind.BR_C: return 3;
                 case SyntaxKind.POW: return 2;
                 case SyntaxKind.MUL: return 1;
                 case SyntaxKind.DIV: return 1;

@@ -21,18 +21,116 @@ namespace MathEquation.CodeAnalysis.Parser
 
         public double Calculate(TokenCollection tokens)
         {
-            if (tokens[0].Kind == SyntaxKind.SUB || tokens[0].Kind == SyntaxKind.ADD)
-                tokens.Insert(0, new SyntaxToken(SyntaxKind.NUMBER, 0.ToString(), new Impl.ElementPosition(0, 0), 0));
+            try
+            {
+                if (tokens[0].Kind == SyntaxKind.SUB || tokens[0].Kind == SyntaxKind.ADD)
+                    tokens.Insert(0, new SyntaxToken(SyntaxKind.NUMBER, 0.ToString(), new Impl.ElementPosition(0, 0), 0));
 
-            while (tokens.Count > 1)
-                for (var priority = OperatorPriority.MaxPriority; priority >= 0; priority--)
-                    for (var i = 0; i < tokens.Count; i++)
-                    {
-                        if (OperatorPriority.Get(tokens[i]) == priority)
-                            ReplaceAction(tokens, i);
-                    }
+                var trycount = 0;
+                while (tokens.Count > 1)
+                {
+                    for (var priority = OperatorPriority.MaxPriority; priority >= 0; priority--)
+                        for (var i = 0; i < tokens.Count; i++)
+                        {
+                            if (OperatorPriority.Get(tokens[i]) == priority)
+                                ReplaceAction(tokens, i);
+                            ReplaceMathFunc(tokens, i);
+                        }
+                    trycount++;
+                    if (trycount > 200)
+                        throw new Exception("Too many attempts");
+                }
 
-            return GetVal(tokens, 0);
+                return GetVal(tokens, 0);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return -1;
+            }
+        }
+
+        private TokenCollection ReplaceMathFunc(TokenCollection tokens, int index)
+        {
+            int rlength = 0, rindex = 0;
+            var value = 0.0;
+            bool iscalc = false;
+
+            if (index >= tokens.Count)
+                return tokens;
+
+
+            //temp
+            rindex = index;
+            rlength = 2;
+            //end temp
+
+            if (tokens[index].Text.Contains("sqrt"))
+            {
+                ReplaceAction(tokens, index + 1);
+
+                value = Math.Sqrt(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            } else
+            if(tokens[index].Text.Contains("cos"))
+            {
+                ReplaceAction(tokens, index + 1);
+                
+                value = Math.Cos(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            } else
+            if (tokens[index].Text.Contains("sin"))
+            {
+                ReplaceAction(tokens, index + 1);
+
+                value = Math.Sin(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            } else
+            if (tokens[index].Text.Contains("tg"))
+            {
+                ReplaceAction(tokens, index + 1);
+
+                value = Math.Tan(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            } else if (tokens[index].Text.Contains("acos"))
+            {
+                ReplaceAction(tokens, index + 1);
+
+                value = Math.Acos(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            }
+            else
+            if (tokens[index].Text.Contains("asin"))
+            {
+                ReplaceAction(tokens, index + 1);
+
+                value = Math.Asin(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            }
+            else
+            if (tokens[index].Text.Contains("atg"))
+            {
+                ReplaceAction(tokens, index + 1);
+
+                value = Math.Atan(GetVal(tokens, index + 1));
+
+                iscalc = true;
+            }
+
+            if (iscalc)
+            {
+                for (var i = 0; i < rlength; i++)
+                    tokens.RemoveAt(rindex);
+                tokens.Insert(rindex, new SyntaxToken(SyntaxKind.NUMBER, value.ToString(), new Impl.ElementPosition(0, 0), value));
+            }
+
+            return tokens;
         }
 
         private TokenCollection ReplaceAction(TokenCollection tokens, int index)
