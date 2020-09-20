@@ -40,20 +40,21 @@ namespace MathEquation.CodeAnalysis.Parser
                 copy.Insert(0, new SyntaxToken(SyntaxKind.ADD, "+", new Impl.ElementPosition(0, 0), null));
 
             //Get index of EQUALLY
-            while (eqindex < tokens.Count)
+            while (eqindex < copy.Count)
             {
-                if (tokens[eqindex].Kind == SyntaxKind.EQUALLY)
+                if (copy[eqindex].Kind == SyntaxKind.EQUALLY)
                     break;
                 eqindex++;
             }
 
-            //Move all to left
-            for (var i = eqindex + 1; i < tokens.Count; i++)
+            //шок!!!
+            int tokensCount = copy.Count;
+            for (int index = eqindex; index < tokensCount; index++)
             {
-                if (!IsOperator(tokens[i].Kind))
+                if(!IsOperator(copy[index].Kind))
                 {
-                    copy.Insert(i, tokens[i]);
-                    copy.Insert(i, new SyntaxToken(InvertOperator(GetOperator(tokens, i - 1).Kind), null, new Impl.ElementPosition(0, 0), null));
+                    copy.Insert(index - 1, copy[index]);
+                    copy.Insert(index - 1, new SyntaxToken(InvertOperator(GetOperator(copy, index - 1).Kind), null, new Impl.ElementPosition(0, 0), null));
                 }
             }
 
@@ -108,7 +109,8 @@ namespace MathEquation.CodeAnalysis.Parser
             if (kind == SyntaxKind.ADD ||
                 kind == SyntaxKind.DIV ||
                 kind == SyntaxKind.MUL ||
-                kind == SyntaxKind.SUB)
+                kind == SyntaxKind.SUB ||
+                kind == SyntaxKind.EQUALLY)
                 return true;
             return false;
         }

@@ -12,6 +12,22 @@ namespace MathEquation.CLI
     {
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            while (true)
+            {
+                Console.Write(">>> ");
+                string line = Console.ReadLine();
+                if (line.StartsWith("eq"))
+                {
+                    ColoredWrite(ConsoleColor.DarkGray, "-> ");
+                    ColoredWriteLine(ConsoleColor.DarkYellow, $"{new Equation().CalculateX(line.Replace("eq", ""))}");
+                }
+                else
+                {
+                    ColoredWrite(ConsoleColor.DarkGray, "-> ");
+                    ColoredWriteLine(ConsoleColor.DarkYellow, $"{new Calculator().Calculate(line)}");
+                }
+            }
             //FFUUUUUUUUUUUCK
             /*Console.WriteLine(new Calculator().Calculate("2*(atg90)"));
 
@@ -24,10 +40,18 @@ namespace MathEquation.CLI
 
             Console.WriteLine(dt.Calculate());*/
 
-            Console.WriteLine(new Calculator().Calculate("tg25"));
-            Console.WriteLine(new Calculator().Calculate("5,52 + 5.15"));
-
-            Console.ReadLine();
+            //Console.WriteLine(new Calculator().Calculate("tg25"));
+            //Console.WriteLine(new Calculator().Calculate("5,52 + 5.15"));
+        }
+        private static void ColoredWrite(ConsoleColor color, string msg)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(msg);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+        }
+        private static void ColoredWriteLine(ConsoleColor color, string msg)
+        {
+            ColoredWrite(color, msg + "\n");
         }
     }
 }
