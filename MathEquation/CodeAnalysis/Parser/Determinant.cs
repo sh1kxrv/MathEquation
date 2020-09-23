@@ -87,7 +87,9 @@ namespace MathEquation.CodeAnalysis.Parser
         public DeterminantMatrix(int order, params object[] expressions)
         {
             if (expressions.Length != order * order)
+            {
                 throw new Exception($"The number of expressions({expressions.Length}) must be equal to the number of cells({order * order}) in the matrix");
+            }
 
             Order = order;
 

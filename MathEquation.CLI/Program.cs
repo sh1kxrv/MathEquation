@@ -12,36 +12,43 @@ namespace MathEquation.CLI
     {
         static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            while (true)
-            {
-                Console.Write(">>> ");
-                string line = Console.ReadLine();
-                if (line.StartsWith("eq"))
-                {
-                    ColoredWrite(ConsoleColor.DarkGray, "-> ");
-                    ColoredWriteLine(ConsoleColor.DarkYellow, $"{new Equation().CalculateX(line.Replace("eq", ""))}");
-                }
-                else
-                {
-                    ColoredWrite(ConsoleColor.DarkGray, "-> ");
-                    ColoredWriteLine(ConsoleColor.DarkYellow, $"{new Calculator().Calculate(line)}");
-                }
-            }
-            //FFUUUUUUUUUUUCK
-            /*Console.WriteLine(new Calculator().Calculate("2*(atg90)"));
+            Calculator.OnError += (msg) => Console.WriteLine("{ERROR} " + msg);
+            Calculator.OnMessage += (msg, gen) => Console.WriteLine("{MESSAGE} " + msg + ", Generation: " + gen);
 
-            var dtm = new DeterminantMatrix(5,  4,  1,  1,  2,  1,
-                                                1,  2, -1,  1,  1,
-                                                3,  1,  1,  1,  1,
-                                                2,  1,  1,  4,  1,
-                                                2, -1,  1,  1,  5);
+            //Console.ForegroundColor = ConsoleColor.DarkGray;
+            //while (true)
+            //{
+            //    Console.Write(">>> ");
+            //    string line = Console.ReadLine();
+            //    if (line.StartsWith("eq"))
+            //    {
+            //        ColoredWrite(ConsoleColor.DarkGray, "-> ");
+            //        ColoredWriteLine(ConsoleColor.DarkYellow, $"{new Equation().CalculateX(line.Replace("eq", ""))}");
+            //    }
+            //    else
+            //    {
+            //        ColoredWrite(ConsoleColor.DarkGray, "-> ");
+            //        ColoredWriteLine(ConsoleColor.DarkYellow, $"{new Calculator().Calculate(line)}");
+            //    }
+            //}
+
+
+            //FFUUUUUUUUUUUCK
+            //Console.WriteLine(new Calculator().Calculate("2*(atg90)"));
+
+            var dtm = new DeterminantMatrix(5, 4, 1, 1, 2, 1,
+                                                1, 2, -1, 1, 1,
+                                                3, 1, 1, 1, 1,
+                                                2, 1, 1, 4, 1,
+                                                2, -1, 1, 1, 5);
             var dt = new Determinant(dtm);
 
-            Console.WriteLine(dt.Calculate());*/
+            Console.WriteLine(dt.Calculate());
 
             //Console.WriteLine(new Calculator().Calculate("tg25"));
             //Console.WriteLine(new Calculator().Calculate("5,52 + 5.15"));
+
+            Console.ReadLine();
         }
         private static void ColoredWrite(ConsoleColor color, string msg)
         {

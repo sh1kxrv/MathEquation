@@ -19,8 +19,10 @@ namespace MathEquation.CodeAnalysis.Parser
             return Calculate(tokens);
         }
 
-        public double Calculate(TokenCollection tokens)
+        public int Gen;
+        public double Calculate(TokenCollection tokens, int gen = 0)
         {
+            Gen = gen;
             try
             {
                 if (tokens[0].Kind == SyntaxKind.SUB || tokens[0].Kind == SyntaxKind.ADD)
@@ -50,7 +52,7 @@ namespace MathEquation.CodeAnalysis.Parser
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                OnError?.Invoke(ex.ToString());
                 return -1;
             }
         }
@@ -130,6 +132,8 @@ namespace MathEquation.CodeAnalysis.Parser
 
             if (iscalc)
             {
+                OnMessage?.Invoke(tokens[index].Text + tokens[index+1].Text + " = " + value, Gen);
+
                 for (var i = 0; i < rlength; i++)
                     tokens.RemoveAt(rindex);
                 tokens.Insert(rindex, new SyntaxToken(SyntaxKind.NUMBER, value.ToString(), new Impl.ElementPosition(0, 0), value));
@@ -171,7 +175,8 @@ namespace MathEquation.CodeAnalysis.Parser
                     }
                     rlength++;
 
-                    value = Calculate(inbrackets);
+                    //value = Calculate(inbrackets, Gen + 1);
+                    value = new Calculator().Calculate(inbrackets, Gen + 1);
 
                     iscalc = true;
                     break;
@@ -219,6 +224,11 @@ namespace MathEquation.CodeAnalysis.Parser
 
             if (iscalc)
             {
+                var str = "";
+                for (var i = 0; i < rlength; i++)
+                    str += tokens[rindex + i].Text;
+                OnMessage?.Invoke(str + " = " + value, Gen);
+
                 for (var i = 0; i < rlength; i++)
                     tokens.RemoveAt(rindex);
                 tokens.Insert(rindex, new SyntaxToken(SyntaxKind.NUMBER, value.ToString(), new Impl.ElementPosition(0, 0), value));
@@ -231,5 +241,11 @@ namespace MathEquation.CodeAnalysis.Parser
         {
             return Convert.ToDouble(tokens[index].Value);
         }
+
+        public delegate void OnErrorEventHandler(string msg);
+        public static event OnErrorEventHandler OnError;
+
+        public delegate void OnMessageEventHandler(string msg, int gen);
+        public static event OnMessageEventHandler OnMessage;
     }
 }
