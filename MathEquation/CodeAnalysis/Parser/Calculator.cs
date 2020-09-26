@@ -47,8 +47,11 @@ namespace MathEquation.CodeAnalysis.Parser
 
         public static bool IsLeftEqualsRight(string value)
         {
-            if (CalculatorVariables.IsHave(value))
-                value = CalculatorVariables.CalculateAndReplace(value);
+            try
+            {
+                if (CalculatorVariables.IsHave(value))
+                    value = CalculatorVariables.CalculateAndReplace(value);
+            }catch { return false; }
 
             var value_left = value.Substring(0, value.IndexOf('='));
             var value_right = value.Substring(value.IndexOf('=') + 1);
