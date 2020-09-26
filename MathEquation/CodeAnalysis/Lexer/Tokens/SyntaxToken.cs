@@ -12,6 +12,7 @@ namespace MathEquation.CodeAnalysis.Lexer.Tokens
         public ElementPosition Position { get; }
         public object Value { get; }
         public string Text { get; }
+        public bool IsKnownFunc { get => Parser.Calculator.KnownFunctions.Contains(Value); }
         public SyntaxToken(SyntaxKind kind, string? text, ElementPosition position, object? value)
         {
             Kind = kind;
@@ -23,7 +24,12 @@ namespace MathEquation.CodeAnalysis.Lexer.Tokens
         }
         public override string ToString()
         {
-            return Text + ", " + Kind;
+            return Text + " as " + Kind;
+        }
+
+        public string ToSimplyString()
+        {
+            return string.IsNullOrEmpty(Text) ? (Value == null ? "" : Value.ToString()).ToString() + Kind.KindToString() : Text;
         }
     }
 }

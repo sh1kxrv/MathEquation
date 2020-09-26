@@ -27,7 +27,7 @@ namespace MathEquation.CodeAnalysis.Parser
 
             OptimizeX(lr);
 
-            return new Calculator().Calculate(lr.right);
+            return new Calculator().Calculate(lr.right, "CalculateXError(Right)");
         }
         
         private LeftRight ToLeftRight(TokenCollection tokens)
@@ -54,7 +54,7 @@ namespace MathEquation.CodeAnalysis.Parser
                 if(!IsOperator(copy[index].Kind))
                 {
                     copy.Insert(index - 1, copy[index]);
-                    copy.Insert(index - 1, new SyntaxToken(InvertOperator(GetOperator(copy, index - 1).Kind), null, new Impl.ElementPosition(0, 0), null));
+                    copy.Insert(index - 1, new SyntaxToken(InvertOperator(GetOperator(copy, index - 1).Kind), null, new Impl.ElementPosition(index - 1, -1), null));
                 }
             }
 
@@ -83,12 +83,12 @@ namespace MathEquation.CodeAnalysis.Parser
                 {
                     if (copy[i].Kind == SyntaxKind.LETTER)
                     {
-                        lr.left.Add(new SyntaxToken(copy[i - 1].Kind, null, new Impl.ElementPosition(0, 0), null));
+                        lr.left.Add(new SyntaxToken(copy[i - 1].Kind, null, new Impl.ElementPosition(i, -1), null));
                         lr.left.Add(copy[i]);
                     }
                     else
                     {
-                        lr.right.Add(new SyntaxToken(InvertOperator(copy[i - 1].Kind), null, new Impl.ElementPosition(0, 0), null));
+                        lr.right.Add(new SyntaxToken(InvertOperator(copy[i - 1].Kind), null, new Impl.ElementPosition(i, -1), null));
                         lr.right.Add(copy[i]);
                     }
                 }
@@ -101,7 +101,7 @@ namespace MathEquation.CodeAnalysis.Parser
         {
             if (IsOperator(tokens[index].Kind))
                 return tokens[index];
-            return new SyntaxToken(SyntaxKind.ADD, "+", new Impl.ElementPosition(0, 0), null);
+            return new SyntaxToken(SyntaxKind.ADD, "+", new Impl.ElementPosition(index), null);
         }
 
         public bool IsOperator(SyntaxKind kind)
@@ -132,11 +132,20 @@ namespace MathEquation.CodeAnalysis.Parser
             if (lr.left[0].Kind == SyntaxKind.ADD)
                 lr.left.RemoveAt(0);
 
+            var trycount = 0;
             while (lr.left.Count > 1)
+            {
                 for (var priority = OperatorPriority.MaxPriority; priority >= 0; priority--)
                     for (var i = 0; i < lr.left.Count; i++)
                         if (OperatorPriority.Get(lr.left[i]) == priority)
                             ReplaceAction(lr.left, lr.right, i);
+                trycount++;
+                if (trycount > 200)
+                {
+                    Calculator.InvokeOnError($"Summary:\r\nOptimizeXError at position {lr.left[1].Position}\r\nDetails:\r\nToo many attempts");
+                    return;
+                }
+            }
         }
 
         private TokenCollection ReplaceAction(TokenCollection tokens, TokenCollection right, int index)
@@ -153,13 +162,13 @@ namespace MathEquation.CodeAnalysis.Parser
 
                     if (tokens[index - 1].Text == "x" && tokens[index + 1].Text == "x")
                     {
-                        value.Add(new SyntaxToken(SyntaxKind.LETTER, "x", new Impl.ElementPosition(0, 0), null));
+                        value.Add(new SyntaxToken(SyntaxKind.LETTER, "x", new Impl.ElementPosition(value.Count - 1), null));
 
                         //WTF???!!!
                         right.Insert(0, new SyntaxToken(SyntaxKind.BR_O, "(", new Impl.ElementPosition(0, 0), null));
-                        right.Add(new SyntaxToken(SyntaxKind.BR_C, ")", new Impl.ElementPosition(0, 0), null));
-                        right.Add(new SyntaxToken(SyntaxKind.POW, "^", new Impl.ElementPosition(0, 0), null));
-                        right.Add(new SyntaxToken(SyntaxKind.NUMBER, "0.5", new Impl.ElementPosition(0, 0), 0.5));
+                        right.Add(new SyntaxToken(SyntaxKind.BR_C, ")", new Impl.ElementPosition(right.Count - 1), null));
+                        right.Add(new SyntaxToken(SyntaxKind.POW, "^", new Impl.ElementPosition(right.Count - 1), null));
+                        right.Add(new SyntaxToken(SyntaxKind.NUMBER, "0.5", new Impl.ElementPosition(right.Count - 1), 0.5));
                     }
  
                     iscalc = true;
@@ -189,13 +198,13 @@ namespace MathEquation.CodeAnalysis.Parser
 
                     if (tokens[index - 1].Text == "x" && tokens[index + 1].Text == "x")
                     {
-                        value.Add(new SyntaxToken(SyntaxKind.LETTER, "x", new Impl.ElementPosition(0, 0), null));
+                        value.Add(new SyntaxToken(SyntaxKind.LETTER, "x", new Impl.ElementPosition(value.Count - 1), null));
 
                         //WTF???!!!
                         right.Insert(0, new SyntaxToken(SyntaxKind.BR_O, "(", new Impl.ElementPosition(0, 0), null));
-                        right.Add(new SyntaxToken(SyntaxKind.BR_C, ")", new Impl.ElementPosition(0, 0), null));
-                        right.Add(new SyntaxToken(SyntaxKind.POW, "/", new Impl.ElementPosition(0, 0), null));
-                        right.Add(new SyntaxToken(SyntaxKind.NUMBER, "2", new Impl.ElementPosition(0, 0), 0.5));
+                        right.Add(new SyntaxToken(SyntaxKind.BR_C, ")", new Impl.ElementPosition(right.Count - 1), null));
+                        right.Add(new SyntaxToken(SyntaxKind.POW, "/", new Impl.ElementPosition(right.Count - 1), null));
+                        right.Add(new SyntaxToken(SyntaxKind.NUMBER, "2", new Impl.ElementPosition(right.Count - 1), 0.5));
                     }
 
                     iscalc = true;

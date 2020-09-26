@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MathEquation.CodeAnalysis.Lexer.Tokens;
 
 namespace MathEquation.CodeAnalysis.Lexer
@@ -17,7 +18,12 @@ namespace MathEquation.CodeAnalysis.Lexer
 
         public override string ToString()
         {
-            return string.Join("", this);
+            return string.Join(", ", this);
+        }
+
+        public string ToSimplyString()
+        {
+            return string.Join("", this.Select(e => e.ToSimplyString()).ToArray());
         }
     }
 }

@@ -19,6 +19,7 @@ namespace MathEquation.CodeAnalysis.Parser
                 case SyntaxKind.BR_O: return 3;
                 case SyntaxKind.BR_C: return 3;
                 case SyntaxKind.POW: return 2;
+                case SyntaxKind.FACT: return 2;
                 case SyntaxKind.MUL: return 1;
                 case SyntaxKind.DIV: return 1;
                 case SyntaxKind.SUB: return 0;

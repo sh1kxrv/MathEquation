@@ -26,7 +26,7 @@ namespace MathEquation.CodeAnalysis.Parser
             var result = 0.0;
 
             for (var i = 0; i < _matrix.Order; i++)
-                result += _calc.Calculate($"(({IndMul(i, 0)})*({_matrix[i, 0]}))*({GetAlgebraicComplement(i, 0).Calculate()})");
+                result += _calc.Calculate($"(({IndMul(i, 0)})*({_matrix[i, 0]}))*({GetAlgebraicComplement(i, 0).Calculate()})", "CalculateDeterminantMatrixError");
 
             return result;
         }
@@ -35,7 +35,7 @@ namespace MathEquation.CodeAnalysis.Parser
         {
             var exp = $"({_matrix[0, 0]})*({_matrix[1, 1]})-({_matrix[0, 1]})*({_matrix[1, 0]})";
 
-            return _calc.Calculate(exp);
+            return _calc.Calculate(exp, "CalculateDeterminantMatrix2x2Error");
         }
 
         public double Calculate3x3()
@@ -48,9 +48,9 @@ namespace MathEquation.CodeAnalysis.Parser
                        $"(({_matrix[0, 1]})*({_matrix[2, 2]})*({_matrix[1, 0]}))+" +
                        $"(({_matrix[0, 0]})*({_matrix[1, 2]})*({_matrix[2, 1]}))";
 
-            var _c = _calc.Calculate(exp);
+            var _c = _calc.Calculate(exp, "CalculateDeterminantMatrix3x3Error(TriangleRule) when evaluating the first expression");
 
-            var _c2 = _calc.Calculate(exp2);
+            var _c2 = _calc.Calculate(exp2, "CalculateDeterminantMatrix3x3Error(TriangleRule) when evaluating the first expression");
 
             return _c - _c2;
         }

@@ -1,6 +1,9 @@
 ﻿using MathEquation.CodeAnalysis.Impl;
 using MathEquation.CodeAnalysis.Lexer.Tokens;
+using MathEquation.CodeAnalysis.Parser;
 using System;
+using System.Linq;
+using System.Security.AccessControl;
 
 namespace MathEquation.CodeAnalysis.Lexer
 {
@@ -67,6 +70,7 @@ namespace MathEquation.CodeAnalysis.Lexer
                 case '*':
                 case '=':
                 case '^':
+                case '!':
                     ReadOperators();
                     break;
                 case '1':
@@ -108,8 +112,12 @@ namespace MathEquation.CodeAnalysis.Lexer
         private void ReadNumber()
         {
             bool isDouble = false;
-            while (char.IsDigit(Current))
+            bool isEnumber = false;
+
+            while (char.IsDigit(Current) || ((Current == 'e' || Current == 'E')) || isEnumber)
             {
+                isEnumber = Current == 'e' || Current == 'E';
+
                 if (Lookahead is '.' || Lookahead is ',')
                 {
                     LexerPosition.CurrentPosition++;
@@ -156,6 +164,8 @@ namespace MathEquation.CodeAnalysis.Lexer
                 Kind = SyntaxKind.MUL;
             else if (Current is '^')
                 Kind = SyntaxKind.POW;
+            else if (Current is '!')
+                Kind = SyntaxKind.FACT;
             else if (Current is '=')
                 Kind = SyntaxKind.EQUALLY;
             LexerPosition.CurrentPosition++;
