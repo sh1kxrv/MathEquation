@@ -116,8 +116,10 @@ namespace MathEquation.CodeAnalysis.Lexer
 
             while (char.IsDigit(Current) || ((Current == 'e' || Current == 'E')) || isEnumber)
             {
+                if (isEnumber)
+                    isDouble = true;
                 isEnumber = Current == 'e' || Current == 'E';
-
+                
                 if (Lookahead is '.' || Lookahead is ',')
                 {
                     LexerPosition.CurrentPosition++;

@@ -79,8 +79,11 @@ namespace MathEquation.CodeAnalysis.Parser
                 i = (float)Math.Round(i, range.trim);
                 //if (CalculatorVariables.IsHave(expr))
                 //    expr = CalculatorVariables.CalculateAndReplace(expr);
-                if (Calculator.IsLeftEqualsRight(expr.Replace(variable, "(" + i.ToString() + ")")))
+                var exprp = expr.Replace(variable, "(" + i.ToString() + ")");
+                var b = Calculator.IsLeftEqualsRight(exprp);
+                if (b)
                     return i;
+                Calculator.InvokeOnLongTimeOperationReceiveMessage(expr + " is " + b);
             }
             throw new Exception("Value not in range");
         }

@@ -20,7 +20,7 @@ namespace MathEquation.CodeAnalysis.Parser
                 if (CalculatorVariables.IsHaveUnknownVariables(value))
                 {
                     if (value.Contains('='))
-                        value = new Equation().CalculateX(value).ToString();
+                        value = "[Test. May not be right]   " + new Equation().CalculateX(value).ToString();
                     else
                         value = "[ERROR] Summary: The expression has variables, but they have no meaning";
                 }
@@ -315,5 +315,16 @@ namespace MathEquation.CodeAnalysis.Parser
 
         public delegate void OnMessageEventHandler(string msg, int gen);
         public static event OnMessageEventHandler OnMessage;
+        public static void InvokeOnMessage(string msg, int gen)
+        {
+            OnMessage?.Invoke(msg, gen);
+        }
+
+        public delegate void LognTimeOperationEventHandler(string msg);
+        public static event LognTimeOperationEventHandler OnLongTimeOperationReceiveMessage;
+        public static void InvokeOnLongTimeOperationReceiveMessage(string msg)
+        {
+            OnLongTimeOperationReceiveMessage?.Invoke("In progress: " + msg);
+        }
     }
 }
