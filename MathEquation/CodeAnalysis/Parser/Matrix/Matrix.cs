@@ -29,7 +29,10 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
                 var line = new List<object>();
 
                 for (var x = columns_count * y; x < columns_count * y + columns_count; x++)
-                    line.Add(expressions[x]);
+                    if (expressions.Length <= x)
+                        line.Add(0);
+                    else
+                        line.Add(expressions[x]);
 
                 this.Add(line);
             }
@@ -48,20 +51,85 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
             }
         }
 
-        //TODO egor
+
+        private static Calculator _calc = new Calculator();
+
         public static Matrix operator +(Matrix left, Matrix right)
         {
-            throw new NotSupportedException();
+            if (left.Rows != right.Rows ||
+                left.Columns != right.Columns)
+            {
+                throw new Exception("Columns and Rows must be equals");
+            }
+
+            List<object> args = new List<object>();
+            for (var y = 0; y < left.Rows; y++)
+            {
+                for (var x = 0; x < right.Columns; x++)
+                {
+                    args.Add(_calc.Calculate($"({left[x, y]}) + ({right[x, y]})"));
+                }
+            }
+
+            return new Matrix(left.Rows, right.Columns, args.ToArray());
         }
 
         public static Matrix operator -(Matrix left, Matrix right)
         {
-            throw new NotSupportedException();
+            if (left.Rows != right.Rows ||
+                left.Columns != right.Columns)
+            {
+                throw new Exception("Columns and Rows must be equals");
+            }
+
+            List<object> args = new List<object>();
+            for (var y = 0; y < left.Rows; y++)
+            {
+                for (var x = 0; x < right.Columns; x++)
+                {
+                    args.Add(_calc.Calculate($"({left[x, y]}) - ({right[x, y]})"));
+                }
+            }
+
+            return new Matrix(left.Rows, right.Columns, args.ToArray());
         }
 
         public static Matrix operator *(Matrix left, Matrix right)
         {
-            throw new NotSupportedException();
+            if (left.Columns != right.Rows)
+                throw new Exception("left.Columns != right.Rows");
+
+            var matrixC = new Matrix(left.Rows, right.Columns);
+
+            for (var i = 0; i < left.Rows; i++)
+            {
+                for (var j = 0; j < right.Columns; j++)
+                {
+                    var tmp = 0.0;
+
+                    for (var k = 0; k < left.Columns; k++)
+                    {
+                        tmp += _calc.Calculate($"({left[k, i]}) * ({right[j, k]})");
+                    }
+
+                    matrixC[j, i] = tmp.ToString();
+                }
+            }
+
+            return matrixC;
+        }
+
+        public override string ToString()
+        {
+            return string.Join("\r\n", this.Select((arr, x) => {
+                var str = "| ";
+                str += string.Join(" ", arr.Select((cell, y) =>
+                {
+                    return $"a{x + 1}{y + 1}={cell}\t";
+                }));
+                str += " |";
+                return str;
+            }));
         }
     }
 }
