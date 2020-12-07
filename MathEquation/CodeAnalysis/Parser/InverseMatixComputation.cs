@@ -19,20 +19,17 @@ namespace MathEquation.CodeAnalysis.Parser
         }
         public Matrix.Matrix Calculate()
         {
+            if(Matrix.Order > 3)
+                throw new Exception("Support only 2x2, 3x3");
             Determinant = determinant.Calculate();
             if (Determinant == 0)
                 throw new Exception("Determinant = 0");
-            if (Matrix.Order == 2)
-                return Solve2x2();
-            else if (Matrix.Order == 3)
-                return Solve3x3();
-
-            throw new Exception("4x4 5x5 6x6 | todo");
+            return Solve();
         }
 
-        private Matrix.Matrix Solve3x3()
+        private Matrix.Matrix Solve()
         {
-            var inverse = new Matrix.Matrix(3,3);
+            var inverse = new Matrix.Matrix(Matrix.Rows, Matrix.Columns);
             for (int i = 0; i < Matrix.Order; i++)
             {
                 for (int j = 0; j < Matrix.Order; j++)
@@ -46,7 +43,7 @@ namespace MathEquation.CodeAnalysis.Parser
         }
         private Matrix.Matrix Transp(Matrix.Matrix matrix)
         {
-            var tempMatr = new Matrix.Matrix(3,3);
+            var tempMatr = new Matrix.Matrix(matrix.Rows, matrix.Columns);
             for (int i = 0; i < Matrix.Order; i++)
                 for (int j = 0; j < Matrix.Order; j++)
                     tempMatr[j][i] = matrix[i][j];
@@ -73,10 +70,6 @@ namespace MathEquation.CodeAnalysis.Parser
                 }
             }
             return matrix;
-        }
-        private Matrix.Matrix Solve2x2()
-        {
-            return new Parser.Matrix.Matrix(2,2);
         }
     }
 }

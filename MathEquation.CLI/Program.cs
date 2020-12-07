@@ -58,8 +58,19 @@ namespace MathEquation.CLI
             var inv = new InverseMatixComputation(new Matrix(3,3, 5, -2, 1,
                                                                   2, 1, 4,
                                                                   3, 1, 2));
+
+            var inv2 = new InverseMatixComputation(new Matrix(2, 2, -2, 1, 1, 4));
+
+            var inv3 = new InverseMatixComputation(new Matrix(5, 5, 5,7,-5,-2,-1,
+                                                                 2,1,7,6,3,
+                                                                 1,0,2,0,-3,
+                                                                 5,0,-1,3,-4,
+                                                                 -4,3,-2,0,4));
+
             Console.WriteLine("=======================");
-            Console.WriteLine($"Inverse Matrix:\n{inv.Calculate()}");
+            Console.WriteLine($"Inverse 3x3 Matrix:\n{inv.Calculate()}");
+            Console.WriteLine($"Inverse 2x2 Matrix:\n{inv2.Calculate()}");
+            Console.WriteLine($"Inverse 5x5 Matrix:\n{inv3.Calculate()}");
 
             //Console.WriteLine(new Calculator().Calculate("(-25.04)"));
             //Console.WriteLine(new Calculator().Calculate("((2+3)!-3!)/3!"));

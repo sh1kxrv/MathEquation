@@ -22,6 +22,18 @@ namespace MathEquation.CodeAnalysis.Parser
 
         public double Calculate()
         {
+            if (Triangle(Matrix) && Matrix.Order == 2)
+            {
+                for (int i = 0; i < Matrix.Rows; i++)
+                {
+                    for (int j = 0; j < Matrix.Columns; j++)
+                    {
+                        if (Convert.ToDouble(Matrix[i][j]) != 0)
+                            return Convert.ToDouble(Matrix[i][j]);
+                    }
+                }
+            }
+
             if (_matrix.Order == 2)
                 return Calculate2x2();
             if (_matrix.Order == 3)
@@ -35,6 +47,20 @@ namespace MathEquation.CodeAnalysis.Parser
             return result;
         }
 
+        private bool Triangle(Matrix.Matrix matr)
+        {
+            int k = 0, s = 0, o = 0;
+            for (int i = 0; i < matr.Order; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (matr[i][j].ToString() == "0") s++;
+                    if (matr[matr.Order - i - 1][matr.Order - j - 1].ToString() == "0") o++;
+                    k++;
+                }
+            }
+            return s == k || o == k;
+        }
         public double Calculate2x2()
         {
             var exp = $"({_matrix[0, 0]})*({_matrix[1, 1]})-({_matrix[0, 1]})*({_matrix[1, 0]})";
