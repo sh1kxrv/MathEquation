@@ -72,9 +72,6 @@ namespace MathEquation.CLI
             Console.WriteLine($"Inverse 2x2 Matrix:\n{inv2.Calculate()}");
             Console.WriteLine($"Inverse 5x5 Matrix:\n{inv3.Calculate()}");
 
-            //Console.WriteLine(new Calculator().Calculate("(-25.04)"));
-            //Console.WriteLine(new Calculator().Calculate("((2+3)!-3!)/3!"));
-
             Console.ReadLine();
         }
         private static void ColoredWrite(ConsoleColor color, string msg)
