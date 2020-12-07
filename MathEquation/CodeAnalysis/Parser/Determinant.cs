@@ -22,18 +22,20 @@ namespace MathEquation.CodeAnalysis.Parser
 
         public double Calculate()
         {
-            if (Triangle(Matrix) && Matrix.Order == 2)
-            {
-                for (int i = 0; i < Matrix.Rows; i++)
-                {
-                    for (int j = 0; j < Matrix.Columns; j++)
-                    {
-                        if (Convert.ToDouble(Matrix[i][j]) != 0)
-                            return Convert.ToDouble(Matrix[i][j]);
-                    }
-                }
-            }
+            //if (Triangle(Matrix) && Matrix.Order == 2)
+            //{
+            //    for (int i = 0; i < Matrix.Rows; i++)
+            //    {
+            //        for (int j = 0; j < Matrix.Columns; j++)
+            //        {
+            //            if (Convert.ToDouble(Matrix[i][j]) != 0)
+            //                return Convert.ToDouble(Matrix[i][j]);
+            //        }
+            //    }
+            //}
 
+            if (_matrix.Order == 1)
+                return Convert.ToDouble(_matrix[0][0]);
             if (_matrix.Order == 2)
                 return Calculate2x2();
             if (_matrix.Order == 3)

@@ -19,8 +19,8 @@ namespace MathEquation.CodeAnalysis.Parser
         }
         public Matrix.Matrix Calculate()
         {
-            if(Matrix.Order > 3)
-                throw new Exception("Support only 2x2, 3x3");
+            //if(Matrix.Order > 3)
+            //    throw new Exception("Support only 2x2, 3x3");
             Determinant = determinant.Calculate();
             if (Determinant == 0)
                 throw new Exception("Determinant = 0");
@@ -34,7 +34,7 @@ namespace MathEquation.CodeAnalysis.Parser
             {
                 for (int j = 0; j < Matrix.Order; j++)
                 {
-                    var tempMatrix = Get2x2Matrix(i, j);
+                    var tempMatrix = GetTempMatrix(i, j, Matrix.Order - 1);
                     double det = new Determinant(tempMatrix).Calculate();
                     inverse[i][j] = Math.Pow(-1.0, i + j + 2) * det;
                 }
@@ -50,9 +50,9 @@ namespace MathEquation.CodeAnalysis.Parser
             return tempMatr;
         }
         //Вычеркивание столбцов и строк
-        private Matrix.Matrix Get2x2Matrix(int row, int col)
+        private Matrix.Matrix GetTempMatrix(int row, int col, int order)
         {
-            var matrix = new Matrix.Matrix(2,2);
+            var matrix = new Matrix.Matrix(order, order);
             int ki = 0;
             for (int i = 0; i < Matrix.Order; i++)
             {
