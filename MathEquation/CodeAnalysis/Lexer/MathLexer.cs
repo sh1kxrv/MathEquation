@@ -132,14 +132,23 @@ namespace MathEquation.CodeAnalysis.Lexer
             string str = Content.Substring(LexerPosition.StartPosition, len);
             if (!isDouble)
             {
-                if (!int.TryParse(str, out int value))
+                if (!long.TryParse(str, out long value))
                     throw new Exception($"Invalid integer number {str}");
                 Value = value;
             }
             else {
                 //))))))))))
-                if (!double.TryParse(str.Replace('.', ','), out double value))
-                    throw new Exception($"Invalid double number {str}");
+                //WTF
+                //This not working
+                //var tmp2 = Convert.ToDouble(output);
+                //OR
+                //if (!double.TryParse(output, out double value))
+                //    throw new Exception($"Invalid double number {str}");
+
+                var value_split = str.Split(',', '.');
+                double value = long.Parse(value_split[0]);
+                value += long.Parse(value_split[1]) / (Math.Pow(10, value_split[1].Length));
+
                 Value = value;
             }
             Kind = SyntaxKind.NUMBER;

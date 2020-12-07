@@ -8,11 +8,15 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
 {
     public class Matrix : List<List<object>>
     {
-        public int Rows;
-        public int Columns;
+        public int Rows => this.Count;
+        public int Columns => Rows == 0 ? 0 : this[0].Count;
 
         [Obsolete("Order is deprecated, use Rows adn Columns instead.")]
         public int Order => Rows;
+
+        public Matrix() : base()
+        {
+        }
 
         public Matrix(int rows_count, int columns_count, params object[] expressions)
         {
@@ -21,8 +25,7 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
             //    throw new Exception($"The number of expressions({expressions.Length}) must be equal to the number of cells({order * order}) in the matrix");
             //}
 
-            Rows = rows_count;
-            Columns = columns_count;
+            var dft = expressions.Length == 0 ? 0 : expressions[0];
 
             for (var y = 0; y < rows_count; y++)
             {
@@ -30,7 +33,7 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
 
                 for (var x = columns_count * y; x < columns_count * y + columns_count; x++)
                     if (expressions.Length <= x)
-                        line.Add(0);
+                        line.Add(dft);
                     else
                         line.Add(expressions[x]);
 
@@ -119,13 +122,50 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
             return matrixC;
         }
 
+        public Matrix Resize(int rows, int columns)
+        {
+            var result = new Matrix(rows, columns, "");
+
+            var miny = rows < this.Rows ? rows : this.Rows;
+            var minx = columns < this.Columns ? columns : this.Columns;
+
+            for (var y = 0; y < miny; y++)
+            {
+                for (var x = 0; x < minx; x++)
+                {
+                    result[x, y] = this[x, y];
+                }
+            }
+
+            return result;
+        }
+
+        public bool IsAnyCellEmpty()
+        {
+            foreach (var row in this)
+                foreach (var cell in row)
+                    if (string.IsNullOrEmpty(cell?.ToString()))
+                        return true;
+            return false;
+        }
+
         public override string ToString()
         {
+            var cols = new List<int>();
+
+            while (cols.Count < this.Columns)
+                cols.Add(0);
+
+            for (var y = 0; y < this.Rows; y++)
+                for (var x = 0; x < this.Columns; x++)
+                    if (cols[x] < this[x, y].Length)
+                        cols[x] = this[x, y].Length;
+
             return string.Join("\r\n", this.Select((arr, x) => {
                 var str = "| ";
-                str += string.Join(" ", arr.Select((cell, y) =>
+                str += string.Join("  ", arr.Select((cell, y) =>
                 {
-                    return $"a{x + 1}{y + 1}={cell}\t";
+                    return $"a{x + 1}{y + 1}={cell}" + new string(' ', cols[y] - cell.ToString().Length);
                 }));
                 str += " |";
                 return str;

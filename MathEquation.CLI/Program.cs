@@ -39,21 +39,23 @@ namespace MathEquation.CLI
             //FFUUUUUUUUUUUCK
             //Console.WriteLine(new Calculator().Calculate("2*(atg90)"));
 
-            var dtm = new Matrix(3, 3, 3,  3,  -1,
-                                       4,  1,   3,
+            var dtm = new Matrix(3, 3, "(-3.3)",  3,  -1,
+                                       4,  1,  "(1234567891011)",
                                        1, -2, -2);
 
             var dtm2 = new Matrix(3, 1, -1, 2, 1,
                                          3, 1, 1,
                                         -2, 1, 1);
 
-            Console.WriteLine(dtm * dtm2);
+            //Console.WriteLine(dtm * dtm2);
 
-            //var dt = new Determinant(dtm);
+            var dt = new Determinant_WithSteps(dtm);
 
-            //Console.WriteLine(dt.Calculate_WithSteps(2).Item2);
+            Console.WriteLine(dt.Calculate_WithVarsSteps("", 0).Item2 + "\r\n=========================================\r\n");
+            Console.WriteLine(dt.Calculate_WithVarsSteps("", 1).Item2 + "\r\n=========================================\r\n");
+            Console.WriteLine(dt.Calculate_WithVarsSteps("", 2).Item2 + "\r\n=========================================\r\n");
 
-            //Console.WriteLine(new Calculator().Calculate("tg25"));
+            //Console.WriteLine(new Calculator().Calculate("(-25.04)"));
             //Console.WriteLine(new Calculator().Calculate("((2+3)!-3!)/3!"));
 
             Console.ReadLine();

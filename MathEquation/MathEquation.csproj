@@ -53,6 +53,7 @@
     <Compile Include="CodeAnalysis\Parser\Calculator.cs" />
     <Compile Include="CodeAnalysis\Parser\CalculatorVariables.cs" />
     <Compile Include="CodeAnalysis\Parser\Determinant.cs" />
+    <Compile Include="CodeAnalysis\Parser\Determinant_WithSteps.cs" />
     <Compile Include="CodeAnalysis\Parser\Matrix\Matrix.cs" />
     <Compile Include="CodeAnalysis\Parser\Structures.cs" />
     <Compile Include="CodeAnalysis\Parser\OperatorPriority.cs" />
