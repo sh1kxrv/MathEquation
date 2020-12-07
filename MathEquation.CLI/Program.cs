@@ -55,6 +55,12 @@ namespace MathEquation.CLI
             Console.WriteLine(dt.Calculate_WithVarsSteps("", 1).Item2 + "\r\n=========================================\r\n");
             Console.WriteLine(dt.Calculate_WithVarsSteps("", 2).Item2 + "\r\n=========================================\r\n");
 
+            var inv = new InverseMatixComputation(new Matrix(3,3, 5, -2, 1,
+                                                                  2, 1, 4,
+                                                                  3, 1, 2));
+            Console.WriteLine("=======================");
+            Console.WriteLine($"Inverse Matrix:\n{inv.Calculate()}");
+
             //Console.WriteLine(new Calculator().Calculate("(-25.04)"));
             //Console.WriteLine(new Calculator().Calculate("((2+3)!-3!)/3!"));
 

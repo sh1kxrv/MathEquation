@@ -11,7 +11,7 @@ namespace MathEquation.CodeAnalysis.Parser
     public class Determinant
     {
         protected Matrix.Matrix _matrix;
-        protected Calculator _calc = new Calculator();
+        protected readonly Calculator _calc = new Calculator();
 
         public Matrix.Matrix Matrix => _matrix;
 

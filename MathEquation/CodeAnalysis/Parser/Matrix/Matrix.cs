@@ -122,6 +122,15 @@ namespace MathEquation.CodeAnalysis.Parser.Matrix
             return matrixC;
         }
 
+        public static Matrix operator *(Matrix left, double variable)
+        {
+            var calculated = new Matrix(left.Rows, left.Columns);
+            for (int i = 0; i < left.Rows; i++)
+                for (int j = 0; j < left.Columns; j++)
+                    calculated[i][j] = _calc.Calculate($"({left[i][j]})*({variable})");
+            return calculated;
+        }
+
         public Matrix Resize(int rows, int columns)
         {
             var result = new Matrix(rows, columns, "");
